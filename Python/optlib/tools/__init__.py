@@ -39,27 +39,28 @@ def init_option(**kwgs):
     try:
         option['sigma'] = float(kwgs['sigma'])
     except KeyError:
+        option['sigma'] = float(0.25)
         print('No sigma set. Use default 0.25')
-    try:
-        option['u'] = float(kwgs['u'])
-        option['d'] = float(kwgs['d'])
-    except KeyError as e:
-        if e is 'u':
-            try:
-                option['d'] = float(kwgs['d'])
-                print('No "u" set, initialize it while "u * d = 1"')
-                option['u'] = float(1 / option['d'])
-            except KeyError:
-                print('No "u" or "d" set, initialize it with bsm')
-                option['d'] = math.e ** (
-                    -option['sigma'] * math.sqrt(option['t'])
-                )
-                option['u'] = math.e ** (
-                    option['sigma'] * math.sqrt(option['t'])
-                )
-        else:
-            print('No "d" set, initialize it while "u * d = 1"')
-            option['d'] = float(1 / option['u'])
+    # try:
+    #     option['u'] = float(kwgs['u'])
+    #     option['d'] = float(kwgs['d'])
+    # except KeyError as e:
+    #     if e is 'u':
+    #         try:
+    #             option['d'] = float(kwgs['d'])
+    #             print('No "u" set, initialize it while "u * d = 1"')
+    #             option['u'] = float(1 / option['d'])
+    #         except KeyError:
+    #             print('No "u" or "d" set, initialize it with bsm')
+    #             option['d'] = math.e ** (
+    #                 -option['sigma'] * math.sqrt(option['t'])
+    #             )
+    #             option['u'] = math.e ** (
+    #                 option['sigma'] * math.sqrt(option['t'])
+    #             )
+    #     else:
+    #         print('No "d" set, initialize it while "u * d = 1"')
+    #         option['d'] = float(1 / option['u'])
     try:
         option['r'] = float(kwgs['r'])
     except KeyError:
