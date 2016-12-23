@@ -35,7 +35,8 @@ pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
-Python/htmlcov/
+Python/htmlcov/ls
+
 Python/.tox/
 Python/.coverage
 Python/.coverage.*
@@ -60,4 +61,5 @@ Python/target/
 
 # pyenv python configuration file
 Python/.python-version
+Python/tests
 Python/old
