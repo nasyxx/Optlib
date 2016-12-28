@@ -4,9 +4,11 @@
 """
 import setuptools
 
+import optlib
+
 setuptools.setup(
     name="optlib",
-    version="0.0.1",
+    version=optlib.__version__,
     license="MIT LICENSE",
     url="https://github.com/nasyxx/Optlib",
 
@@ -28,5 +30,6 @@ setuptools.setup(
         # 'Programming Language :: Python :: 3',
         # 'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
 )

@@ -22,14 +22,15 @@ def init_option(**kwgs):
 
     # k & s
     try:
-        option['k'] = float(kwgs.get('k', kwgs['K']))
-        option['s'] = float(kwgs.get('s', kwgs['S']))
+        option['k'] = float(kwgs['k'])
+        option['s'] = float(kwgs['s'])
     except KeyError as e:
         warn_message = {
-            'K': 'No Strike Price',
-            'S': 'No Underlying Asset Price'
+            's': 'No Strike Price',
+            'k': 'No Underlying Asset Price'
         }
-        raise KeyError('Initialize the Option False. ' + warn_message[e])
+        raise KeyError('Initialize the Option False. '
+                       '{e}'.format(e=warn_message[e]))
 
     # t
     try:
@@ -39,7 +40,7 @@ def init_option(**kwgs):
             print('Prefer using "day" to "t"', DeprecationWarning)
     except KeyError:
         try:
-            option['t'] = float(kwgs.get('t', kwgs['T']))
+            option['t'] = float(kwgs['t'])
         except KeyError:
             option['t'] = float(90 / 365)
             warn('No "T" or "day" set, use default "t = 90/365"',
@@ -60,14 +61,16 @@ def init_option(**kwgs):
         """
         if m is 0:
             print('No "sigma" or "u, d" set, use default sigma 0.25')
+            print(m)
             return 0.25
         elif m is 1:
-            if ('u' and 'd') or 'u' in kwgs:
+            if ('u' in kwgs and 'd' in kwgs) or 'u' in kwgs:
                 sigma = math.log(kwgs['u']) / math.sqrt(kwgs['t'])
             elif 'd' in kwgs:
                 sigma = -math.log(kwgs['d']) / math.sqrt(kwgs['t'])
             print('No "sigma" but "u" or "d" set, calculate "sigma" '
                   'with Black-Scholes-Merton. sigma={s}'.format(s=sigma))
+            print(m)
             return sigma
         elif m is 2:
             if 'd' in kwgs:
@@ -76,38 +79,44 @@ def init_option(**kwgs):
                 u = math.e**(kwgs['sigma'] * math.sqrt(kwgs['t']))
             print('No "u" but "d" or "sigma" set, calculate "u" '
                   'with Black-Scholes-Merton while u*d = 1. u={u}'.format(u=u))
+            print(m)
             return u
         elif m is 3:
             u = math.e**(0.25 * math.sqrt(kwgs['t']))
             print('No "u", "d" or "sigma" set, calculate "u" '
                   'with Black-Scholes-Merton while sigma is default 0.25. '
                   'u={u}'.format(u=u))
+            print(m)
+            return u
         elif m is 4:
             if 'u' in kwgs:
                 d = 1 / kwgs['u']
             elif 'sigma' in kwgs:
-                d = math.e**(kwgs['sigma'] * math.sqrt(kwgs['t']))
+                d = math.e**(-kwgs['sigma'] * math.sqrt(kwgs['t']))
             print('No "d" but "u" or "sigma" set, calculate "d" '
                   'with Black-Scholes-Merton while u*d = 1. d={d}'.format(d=d))
+            print(m)
             return d
         elif m is 5:
             d = math.e**(-0.25 * math.sqrt(kwgs['t']))
             print('No "u", "d" or "sigma" set, calculate "d" '
                   'with Black-Scholes-Merton while sigma is default 0.25. '
                   'd={d}'.format(d=d))
+            print(m)
+            return d
 
     option = {
         **option,
         **{
-            'sigma': float(kwgs.get(
-                'sigma', _s_ud(1) if ('u' or 'd') in kwgs else _s_ud(0)
-            )),
-            'u': float(kwgs.get(
-                'u', _s_ud(2) if ('d' or 'sigma') in kwgs else _s_ud(3),
-            )),
-            'd': float(kwgs.get(
-                'd', _s_ud(4) if ('u' or 'sigma') in kwgs else _s_ud(5),
-            )),
+            'sigma': float(kwgs['sigma']) if 'sigma' in kwgs else (
+                _s_ud(1) if 'u' in kwgs or 'd' in kwgs else _s_ud(0)
+            ),
+            'u': float(kwgs['u']) if 'u' in kwgs else (
+                _s_ud(2) if 'd' in kwgs or 'sigma' in kwgs else _s_ud(3)
+            ),
+            'd': float(kwgs['d']) if 'd' in kwgs else (
+                _s_ud(4) if 'u' in kwgs or 'sigma' in kwgs else _s_ud(5)
+            ),
         },
     }
     # try:
