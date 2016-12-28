@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-# pylint: disable=C0103, R0912, R0915
+# pylint: disable=C0103
 """
   @Author: Nasy
   @Date: Dec 22, 2016
@@ -12,69 +12,180 @@
 """
 
 import math
+from warnings import warn
 
 
 def init_option(**kwgs):
     """Initialize An Option.
     """
     option = {}
+
+    # k & s
     try:
-        option['k'] = float(kwgs['k'])
-        option['s'] = float(kwgs['s'])
+        option['k'] = float(kwgs.get('k', kwgs['K']))
+        option['s'] = float(kwgs.get('s', kwgs['S']))
     except KeyError as e:
-        print(e)
-        if e is 'k':
-            raise KeyError('Initialize the Option False. No Strike Price')
-        elif e is 's':
-            raise KeyError('Initialize the Option False. '
-                           'No Underlying Asset Price')
+        warn_message = {
+            'K': 'No Strike Price',
+            'S': 'No Underlying Asset Price'
+        }
+        raise KeyError('Initialize the Option False. ' + warn_message[e])
+
+    # t
     try:
-        option['t'] = float(kwgs['day'] / 365)
+        option['t'] = float(kwgs['D']) / 365 \
+            if 'D' in kwgs else float(kwgs['day'])
+        if 't' in kwgs:
+            print('Prefer using "day" to "t"', DeprecationWarning)
     except KeyError:
         try:
-            option['t'] = float(kwgs['t'])
+            option['t'] = float(kwgs.get('t', kwgs['T']))
         except KeyError:
             option['t'] = float(90 / 365)
-            print('No times set. Use default 90/365 years')
-    try:
-        option['sigma'] = float(kwgs['sigma'])
-    except KeyError:
-        option['sigma'] = float(0.25)
-        print('No sigma set. Use default 0.25')
-    try:
-        option['u'] = float(kwgs['u'])
-        option['d'] = float(kwgs['d'])
-    except KeyError as e:
-        if e is 'u':
-            try:
-                option['d'] = float(kwgs['d'])
-                print('No "u" set, initialize it while "u * d = 1"')
-                option['u'] = float(1 / option['d'])
-            except KeyError:
-                print('No "u" or "d" set, initialize it with bsm')
-                option['d'] = math.e ** (
-                    -option['sigma'] * math.sqrt(option['t'])
-                )
-                option['u'] = math.e ** (
-                    option['sigma'] * math.sqrt(option['t'])
-                )
-        else:
-            print('No "d" set, initialize it while "u * d = 1"')
-            option['d'] = float(1 / option['u'])
-    try:
-        option['r'] = float(kwgs['r'])
-    except KeyError:
-        option['r'] = float(0.03)
-        print('No risk-free rate set. Use default 0.03')
-    try:
-        option['flag'] = kwgs['flag']
-    except KeyError:
-        option['flag'] = 'c'
-        print('No flag set. Use default CALL')
-    try:
-        option['type'] = kwgs['type']
-    except KeyError:
-        option['type'] = 0
+            warn('No "T" or "day" set, use default "t = 90/365"',
+                 DeprecationWarning)
+    # flag, type, r
+    option = {
+        **option,
+        **{
+            'flag': kwgs['flag'] if 'flag' in kwgs else 'c',
+            'type': kwgs['type'] if 'type' in kwgs else 0,
+            'r': kwgs['r'] if 'r' in kwgs else float(0.03)
+        }
+    }
+
+    # sigma, u, d
+    def _s_ud(m):
+        """sigma, u & d
+        """
+        if m is 0:
+            print('No "sigma" or "u, d" set, use default sigma 0.25')
+            return 0.25
+        elif m is 1:
+            if ('u' and 'd') or 'u' in kwgs:
+                sigma = math.log(kwgs['u']) / math.sqrt(kwgs['t'])
+            elif 'd' in kwgs:
+                sigma = -math.log(kwgs['d']) / math.sqrt(kwgs['t'])
+            print('No "sigma" but "u" or "d" set, calculate "sigma" '
+                  'with Black-Scholes-Merton. sigma={s}'.format(s=sigma))
+            return sigma
+        elif m is 2:
+            if 'd' in kwgs:
+                u = 1 / kwgs['d']
+            elif 'sigma' in kwgs:
+                u = math.e**(kwgs['sigma'] * math.sqrt(kwgs['t']))
+            print('No "u" but "d" or "sigma" set, calculate "u" '
+                  'with Black-Scholes-Merton while u*d = 1. u={u}'.format(u=u))
+            return u
+        elif m is 3:
+            u = math.e**(0.25 * math.sqrt(kwgs['t']))
+            print('No "u", "d" or "sigma" set, calculate "u" '
+                  'with Black-Scholes-Merton while sigma is default 0.25. '
+                  'u={u}'.format(u=u))
+        elif m is 4:
+            if 'u' in kwgs:
+                d = 1 / kwgs['u']
+            elif 'sigma' in kwgs:
+                d = math.e**(kwgs['sigma'] * math.sqrt(kwgs['t']))
+            print('No "d" but "u" or "sigma" set, calculate "d" '
+                  'with Black-Scholes-Merton while u*d = 1. d={d}'.format(d=d))
+            return d
+        elif m is 5:
+            d = math.e**(-0.25 * math.sqrt(kwgs['t']))
+            print('No "u", "d" or "sigma" set, calculate "d" '
+                  'with Black-Scholes-Merton while sigma is default 0.25. '
+                  'd={d}'.format(d=d))
+
+    option = {
+        **option,
+        **{
+            'sigma': float(kwgs.get(
+                'sigma', _s_ud(1) if ('u' or 'd') in kwgs else _s_ud(0)
+            )),
+            'u': float(kwgs.get(
+                'u', _s_ud(2) if ('d' or 'sigma') in kwgs else _s_ud(3),
+            )),
+            'd': float(kwgs.get(
+                'd', _s_ud(4) if ('u' or 'sigma') in kwgs else _s_ud(5),
+            )),
+        },
+    }
+    # try:
+    #     option['sigma'] = float(kwgs['sigma'])
+    # except KeyError:
+    #     try:
+    #         option['u'] = float(kwgs['u'])
+    #         option['d'] = float(kwgs['d'])
+    #     except KeyError as e:
+    #         if (e is 'u') and 'd' not in kwgs:
+    #             warn('No "u" or "d" set, calculate them with bsm',
+    #                  DeprecationWarning)
+    #             option['d'] = math.e ** (
+    #                 -option['sigma'] * math.sqrt(option['t'])
+    #             )
+    #             option['u'] = math.e ** (
+    #                 option['sigma'] * math.sqrt(option['t'])
+    #             )
+    #         elif e is 'u':
+
+    # option = {}
+    # try:
+    #     option['k'] = float(kwgs['k'])ipyt
+    #     option['s'] = float(kwgs['s'])
+    # except KeyError as e:
+    #     print(e)
+    #     if e is 'k':
+    #         raise KeyError('Initialize the Option False. No Strike Price')
+    #     elif e is 's':
+    #         raise KeyError('Initialize the Option False. '
+    #                        'No Underlying Asset Price')
+    # try:
+    #     option['t'] = float(kwgs['day'] / 365)
+    # except KeyError:
+    #     try:
+    #         option['t'] = float(kwgs['t'])
+    #     except KeyError:
+    #         option['t'] = float(90 / 365)
+    #         print('No times set. Use default 90/365 years')
+    # try:
+    #     option['sigma'] = float(kwgs['sigma'])
+    # except KeyError:
+    #     option['sigma'] = float(0.25)
+    #     print('No sigma set. Use default 0.25')
+    # try:
+    #     option['u'] = float(kwgs['u'])
+    #     option['d'] = float(kwgs['d'])
+    # except KeyError as e:
+    #     if e is 'u':
+    #         try:
+    #             option['d'] = float(kwgs['d'])
+    #             print('No "u" set, initialize it while "u * d = 1"')
+    #             option['u'] = float(1 / option['d'])
+    #         except KeyError:
+    #             print('No "u" or "d" set, initialize it with bsm')
+    #             option['d'] = math.e ** (
+    #                 -option['sigma'] * math.sqrt(option['t'])
+    #             )
+    #             option['u'] = math.e ** (
+    #                 option['sigma'] * math.sqrt(option['t'])
+    #             )
+    #     else:
+    #         print('No "d" set, initialize it while "u * d = 1"')
+    #         option['d'] = float(1 / option['u'])
+    # try:
+    #     option['r'] = float(kwgs['r'])
+    # except KeyError:
+    #     option['r'] = float(0.03)
+    #     print('No risk-free rate set. Use default 0.03')
+    # try:
+    #     option['flag'] = kwgs['flag']
+    # except KeyError:
+    #     option['flag'] = 'c'
+    #     print('No flag set. Use default CALL')
+    # try:
+    #     option['type'] = kwgs['type']
+    # except KeyError:
+    #     option['type'] = 0
     return option
 
 
