@@ -1,2 +1,2 @@
-numpy
+numpy==1.11.3
 scipy==0.18.1
