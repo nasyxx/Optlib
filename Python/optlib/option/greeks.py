@@ -113,7 +113,7 @@ class Greeks:
         """Greek Vega
         """
         option = self.option
-        return option['s'] * (option['t'] ** (1 / 2)) * self._d_d1
+        return option['s'] * (option['t'] ** (1 / 2)) * self._d_d1 * 0.01
 
 
 def main():
