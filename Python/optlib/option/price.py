@@ -92,13 +92,5 @@ class Price:
             raise TypeError('Monte Carlo Simulation number must be an integer')
 
 
-def main():
-    """main function
-    """
-    import doctest
-    if not doctest.testmod().failed:
-        print("Doctest passed")
-
-
 if __name__ is '__main__':
-    main()
+    pass

@@ -61,7 +61,6 @@ def init_option(**kwgs):
         """
         if m is 0:
             print('No "sigma" or "u, d" set, use default sigma 0.25')
-            print(m)
             return 0.25
         elif m is 1:
             if ('u' in kwgs and 'd' in kwgs) or 'u' in kwgs:
@@ -70,7 +69,6 @@ def init_option(**kwgs):
                 sigma = -math.log(kwgs['d']) / math.sqrt(kwgs['t'])
             print('No "sigma" but "u" or "d" set, calculate "sigma" '
                   'with CRR method. sigma={s}'.format(s=sigma))
-            print(m)
             return sigma
         elif m is 2:
             if 'd' in kwgs:
@@ -79,14 +77,12 @@ def init_option(**kwgs):
                 u = math.e**(kwgs['sigma'] * math.sqrt(kwgs['t']))
             print('No "u" but "d" or "sigma" set, calculate "u" '
                   'with CRR method. u={u}'.format(u=u))
-            print(m)
             return u
         elif m is 3:
             u = math.e**(0.25 * math.sqrt(kwgs['t']))
             print('No "u", "d" or "sigma" set, calculate "u" '
                   'with CRR method while sigma is default 0.25. '
                   'u={u}'.format(u=u))
-            print(m)
             return u
         elif m is 4:
             if 'u' in kwgs:
@@ -95,14 +91,12 @@ def init_option(**kwgs):
                 d = math.e**(-kwgs['sigma'] * math.sqrt(kwgs['t']))
             print('No "d" but "u" or "sigma" set, calculate "d" '
                   'with CRR method. d={d}'.format(d=d))
-            print(m)
             return d
         elif m is 5:
             d = math.e**(-0.25 * math.sqrt(kwgs['t']))
             print('No "u", "d" or "sigma" set, calculate "d" '
                   'with CRR method while sigma is default 0.25. '
                   'd={d}'.format(d=d))
-            print(m)
             return d
 
     option = {
@@ -144,6 +138,4 @@ def d2(**kwgs):
 __all__ = ['init_option', 'd1', 'd2']
 
 if __name__ == '__main__':
-    import doctest
-    if not doctest.testmod().failed:
-        print("Doctest passed")
+    pass

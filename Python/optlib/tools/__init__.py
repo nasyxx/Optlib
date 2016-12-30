@@ -14,14 +14,3 @@
 from optlib.tools.option_init import d1, d2, init_option
 
 __all__ = ['d1', 'd2', 'init_option']
-
-
-def main():
-    """main function
-    """
-    import doctest
-    if not doctest.testmod().failed:
-        print("Doctest passed")
-
-if __name__ == '__main__':
-    main()
