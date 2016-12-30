@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 """setup.py
 """
+import optlib
 import setuptools
 
 setuptools.setup(
     name="optlib",
-    version="0.0.1",
+    version=optlib.__version__,
     license="MIT LICENSE",
     url="https://github.com/nasyxx/Optlib",
 
@@ -14,7 +15,9 @@ setuptools.setup(
     author_email="sy_n@me.com",
 
     description="An Options Library",
-    long_description=open('README.rst').read(),
+    long_description=(open('README.rst').read() + '\n' +
+                      open('AUTHORS.rst') + '\n' +
+                      open('HISTORY.rst') + '\n'),
 
     packages=setuptools.find_packages(),
 
@@ -28,5 +31,6 @@ setuptools.setup(
         # 'Programming Language :: Python :: 3',
         # 'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
 )

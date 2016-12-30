@@ -11,38 +11,14 @@
   An Excited Python Script
 """
 
-from optlib.option.price import bsm, monte_carlo
-from optlib.tools import d1, d2, init_option
 
-
-class Option:
-    """Initialize An Option
-    """
-
-    def __init__(self, **kwgs):
-        """Initialize this option
-        """
-        self.option = init_option(**kwgs)
-        self.d1 = d1(**self.option)
-        self.d2 = d2(**self.option)
-
-    def price(self, method='bsm'):
-        """Calculate this option price
-
-        Default method is 'Black-Scholes-Merton'
-        """
-        if method is 'bsm':
-            return bsm(**self.option)
-        elif method is 'mc':
-            return monte_carlo(**self.option)
-        else:
-            pass
+from optlib.option.option import Option
 
 
 def main():
     """main func
     """
-    option = Option(k=28, s=30, t=1, r=0.04, sigma=0.71)
+    option = Option(k=30, s=30, t=1, r=0.04, sigma=0.71)
     print(option)
 
 

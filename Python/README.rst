@@ -17,24 +17,12 @@ optlib
      :target: https://pyup.io/repos/github/nasyxx/optlib/
      :alt: Updates
 
+.. image:: https://pyup.io/repos/github/nasyxx/optlib/python-3-shield.svg
+    :target: https://pyup.io/repos/github/nasyxx/optlib/
+    :alt: Python 3
 
 An Options Library
 
 
 * Free software: MIT license
 * Documentation: https://optlib.readthedocs.io.
-
-
-Features
---------
-
-* TODO
-
-Credits
----------
-
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
-
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-

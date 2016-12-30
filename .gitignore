@@ -11,7 +11,6 @@ Python/__pycache__/
 Python/env/
 Python/build/
 Python/develop-eggs/
-Python/dist/
 Python/downloads/
 Python/eggs/
 Python/.eggs/
@@ -63,3 +62,4 @@ Python/target/
 Python/.python-version
 Python/tests
 Python/old
+Python/dist
