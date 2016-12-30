@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 """setup.py
 """
-import setuptools
-
 import optlib
+import setuptools
 
 setuptools.setup(
     name="optlib",
@@ -16,7 +15,9 @@ setuptools.setup(
     author_email="sy_n@me.com",
 
     description="An Options Library",
-    long_description=open('README.rst').read(),
+    long_description=(open('README.rst').read() + '\n' +
+                      open('AUTHORS.rst') + '\n' +
+                      open('HISTORY.rst') + '\n'),
 
     packages=setuptools.find_packages(),
 
