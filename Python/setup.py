@@ -5,6 +5,9 @@
 import optlib
 import setuptools
 
+f = open("requirements.txt", "rb")
+REQUIRES = [i.strip() for i in f.read().decode("utf-8").split("\n")]
+
 setuptools.setup(
     name="optlib",
     version=optlib.__version__,
@@ -21,7 +24,7 @@ setuptools.setup(
 
     packages=setuptools.find_packages(),
 
-    install_requires=["scipy"],
+    install_requires=REQUIRES,
 
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
