@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 """
   @Author: Nasy
-  @Date: Dec 31
   @email: sy_n@me.com
   @file: optlib/__init__.py
   @license: MIT
 """
+import time
 
-__author__ = """Nasy"""
+__update__ = time.strftime('%b %d, %Y', time.localtime())
+__author__ = 'Nasy'
 __email__ = 'sy_n@me.com'
-__version__ = '0.0.2'
+__version__ = '0.0.3'
