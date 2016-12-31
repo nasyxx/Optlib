@@ -1,8 +1,0 @@
-language: python
-python:
-  - "3.5"
-  - "3.6" # 3.6 development branch
-# command to install dependencies
-install: "pip install -r ./Python/requirements.txt"
-# command to run tests
-script: pytest ./Python/test/*
