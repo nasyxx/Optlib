@@ -11,6 +11,7 @@
   An Excited Python Script
 """
 
+from optlib.tools.color_print import COLOR_CODES, RESET_COLOR
 from optlib.tools.option_init import d1, d2, init_option
 
-__all__ = ['d1', 'd2', 'init_option']
+__all__ = ['d1', 'd2', 'init_option', 'RESET_COLOR', 'COLOR_CODES']

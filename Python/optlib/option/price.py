@@ -12,7 +12,7 @@
 """
 
 import numpy as np
-from optlib.tools import d1, d2, init_option
+from optlib.tools import COLOR_CODES, RESET_COLOR, d1, d2, init_option
 from scipy.stats import norm
 
 
@@ -32,13 +32,13 @@ class Price:
         """Price Repr.
         """
         res = dict(
-            title='The Option Price',
+            title=COLOR_CODES['yellow'] + 'The Option Price' + RESET_COLOR,
             bsm=['B-S-M', self.bsm],
             mc=['Monte Carlo', self.monte_carlo],
             h_r1='=' * 40 + '\n',
-            h_r2='|' + '-' * 38 + '|\n'
+            h_r2='+' + '-' * 15 + '+' + '-' * 22 + '+\n'
         )
-        return ('{title:<40}\n{h_r1}'
+        return ('{h_r1}| {title:<48}|\n{h_r1}'
                 '| {bsm[0]:<14}| {bsm[1]:<20} |\n{h_r2}'
                 '| {mc[0]:<14}| {mc[1]:<20} |\n{h_r2}'
                 .format(**res))
