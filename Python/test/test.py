@@ -14,6 +14,8 @@ from optlib.option import Option
 
 
 class TestOption:
+    """The test
+    """
 
     option = Option(
         k=30, s=30, t=0.25, r=0.025, sigma=0.44628710262841953, flag='p'
@@ -22,8 +24,8 @@ class TestOption:
     def test_price(self):
         """test price
         """
-        p = abs(self.option.price.bsm - 2.56438903805528)
-        assert p < 0.000001
+        price = abs(self.option.price.bsm - 2.56438903805528)
+        assert price < 0.000001
 
     def test_greek(self):
         """test greek
@@ -34,5 +36,4 @@ class TestOption:
     def test_print(self):
         """test print
         """
-        print(self.option.greeks)
-        print(self.option.price)
+        print(self.option)

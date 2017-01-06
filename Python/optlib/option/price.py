@@ -36,7 +36,7 @@ class Price:
             title=COLOR_CODES['yellow'] + 'The Option Price' + RESET_COLOR,
             bsm=['B-S-M', self.bsm],
             mc=['Std Monte Carlo', self.monte_carlo],
-            h_r1='=' * 40 + '\n',
+            h_r1='=' * 42 + '\n',
             h_r2='+' + '-' * 17 + '+' + '-' * 22 + '+\n',
             crr_rn=['CRR Risk-Nature', self.crr_rn[-1][0]],
         )
@@ -70,7 +70,6 @@ class Price:
         u = np.exp(option['sigma'] * dt ** 0.5)
         d = 1 / u  # math.exp(-option['sigma'] * dt ** 0.5)
         p = (np.exp(option['r'] * dt) - d) / (u - d)
-        print(p)
 
         # The pricd binomial tree
         price_tree = np.array(
