@@ -11,4 +11,4 @@ import time
 __update__ = time.strftime('%b %d, %Y', time.localtime())
 __author__ = 'Nasy'
 __email__ = 'sy_n@me.com'
-__version__ = '0.0.3'
+__version__ = '0.0.4'
