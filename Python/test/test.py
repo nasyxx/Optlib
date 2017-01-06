@@ -28,7 +28,7 @@ class TestOption:
     def test_greek(self):
         """test greek
         """
-        delta = abs(self.option.greeks.delta + 0.5555043355504)
+        delta = abs(self.option.greeks.delta - (-0.444495664))
         assert delta < 0.000001
 
     def test_print(self):

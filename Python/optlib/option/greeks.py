@@ -56,7 +56,7 @@ class Greeks:
         if option['flag'] is 'c':
             return norm.cdf(self.d1)
         else:
-            return -norm.cdf(self.d1)
+            return -norm.cdf(-self.d1)
 
     @property
     def theta(self):
@@ -113,7 +113,7 @@ class Greeks:
         """Greek Vega
         """
         option = self.option
-        return option['s'] * (option['t'] ** (1 / 2)) * self._d_d1 * 0.01
+        return option['s'] * (option['t'] ** (1 / 2)) * self._d_d1
 
 
 def main():
