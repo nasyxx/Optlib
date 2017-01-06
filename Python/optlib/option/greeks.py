@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # pylint: disable=C0103
 """
@@ -12,7 +12,7 @@
 """
 import math
 
-from optlib.tools import d1, d2, init_option
+from optlib.tools import COLOR_CODES, RESET_COLOR, d1, d2, init_option
 from scipy.stats import norm
 
 
@@ -31,16 +31,16 @@ class Greeks:
         """Greeks Repr.
         """
         res = dict(
-            title='The Option Greeks',
+            title=COLOR_CODES['yellow'] + 'The Option Greeks' + RESET_COLOR,
             delta=['Delta(Δ)', self.delta],
             theta=['Theta(Θ)', self.theta],
             rho=['rho(ρ)', self.rho],
             gamma=['Gamma(Γ)', self.gamma],
             vega=['Veta(ν)', self.vega],
             h_r1='=' * 40 + '\n',
-            h_r2='|' + '-' * 38 + '|\n'
+            h_r2='+' + '-' * 11 + '+' + '-' * 26 + '+\n'
         )
-        return ('{title:<40}\n{h_r1}'
+        return ('{h_r1}| {title:<48}|\n{h_r1}'
                 '| {delta[0]:<10}| {delta[1]:<24} |\n{h_r2}'
                 '| {theta[0]:<10}| {theta[1]:<24} |\n{h_r2}'
                 '| {rho[0]:<10}| {rho[1]:<24} |\n{h_r2}'
@@ -56,7 +56,7 @@ class Greeks:
         if option['flag'] is 'c':
             return norm.cdf(self.d1)
         else:
-            return -norm.cdf(self.d1)
+            return -norm.cdf(-self.d1)
 
     @property
     def theta(self):

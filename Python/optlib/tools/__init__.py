@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # pylint: disable=C0103
 """
@@ -11,17 +11,7 @@
   An Excited Python Script
 """
 
+from optlib.tools.color_print import COLOR_CODES, RESET_COLOR
 from optlib.tools.option_init import d1, d2, init_option
 
-__all__ = ['d1', 'd2', 'init_option']
-
-
-def main():
-    """main function
-    """
-    import doctest
-    if not doctest.testmod().failed:
-        print("Doctest passed")
-
-if __name__ == '__main__':
-    main()
+__all__ = ['d1', 'd2', 'init_option', 'RESET_COLOR', 'COLOR_CODES']

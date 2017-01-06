@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # pylint: disable=C0103, E0401
 """
@@ -18,9 +18,7 @@ from optlib.option.option import Option
 def main():
     """main func
     """
-    option = Option(k=30, s=30, t=1, r=0.04, sigma=0.71)
-    print(option)
 
 
-if __name__ == '__main__':
-    main()
+if __name__ is '__main__':
+    pass

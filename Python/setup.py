@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 """setup.py
 """
-import optlib
 import setuptools
+
+import optlib
 
 f = open("requirements.txt", "rb")
 REQUIRES = [i.strip() for i in f.read().decode("utf-8").split("\n")]
@@ -19,8 +20,8 @@ setuptools.setup(
 
     description="An Options Library",
     long_description=(open('README.rst').read() + '\n' +
-                      open('AUTHORS.rst') + '\n' +
-                      open('HISTORY.rst') + '\n'),
+                      open('AUTHORS.rst').read() + '\n' +
+                      open('HISTORY.rst').read() + '\n'),
 
     packages=setuptools.find_packages(),
 
